@@ -21,10 +21,10 @@ def plot_bbox_on_image(img,bbox,save=True):
     plt.show()  
 
 
-def plot_image(img,save=True):
+def plot_image(img,num_element=0,save=True):
 
 
-    img = from_tensor_to_image(img)
+    img = from_tensor_to_image(img,num_element=0)
     
     plt.figure(figsize=(5,5))
     plt.imshow(img)
