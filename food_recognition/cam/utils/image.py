@@ -51,14 +51,12 @@ def get_cam_on_image(img,
     """
 
     if torch.is_tensor(img):
-        img = from_tensor_to_image(img)
+        img = from_tensor_to_image(img,mean_img=mean_img,sd_img=sd_img)
         
     
     if torch.is_tensor(mask):
         mask = mask.detach().cpu().numpy()
 
-    if np.max(img) > 1:
-        img = img/255.
     
 
     heatmap = cv2.applyColorMap(np.uint8(255 * mask), colormap)
