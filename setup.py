@@ -16,7 +16,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url='https://github.com/gaetanochiriaco/food-recognition',
     license='MIT',
-    packages=setuptools.find_packages(
-        exclude=["*tutorial*"]),
-    install_requires=requirements,
+    packages=setuptools.find_packages(exclude=["tutorial"]),
+
+    install_requires=requirements
 )
