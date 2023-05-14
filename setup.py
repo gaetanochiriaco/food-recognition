@@ -7,7 +7,7 @@ with open("requirements.txt", "r") as f:
     requirements = f.readlines()
 
 setuptools.setup(
-    name='foodrecognition',
+    name='food_recognition',
     version='0.1',
     author='Gaetano Chiriaco',
     author_email='g.chiriaco@campus.unimib.it',
