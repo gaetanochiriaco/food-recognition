@@ -1,1 +1,1 @@
-from food_recognition.cam import *
+from .utils import *
