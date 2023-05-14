@@ -1,19 +1,6 @@
 import torch
 
 
-def fasterrcnn_reshape_transform(x):
-    target_size = x['pool'].size()[-2:]
-    activations = []
-    for key, value in x.items():
-        activations.append(
-            torch.nn.functional.interpolate(
-                torch.abs(value),
-                target_size,
-                mode='bilinear'))
-    activations = torch.cat(activations, axis=1)
-    return activations
-
-
 def swin_reshape_transform(tensor, height=7, width=7):
     result = tensor.reshape(tensor.size(0),
                             height, width, -1)

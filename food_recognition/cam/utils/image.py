@@ -76,33 +76,6 @@ def get_cam_on_image(img,
     cam = cam / np.max(cam)
     return np.uint8(255.0 * cam)
 
-def get_cam_on_batch(img_batch,
-                     mask_batch,
-                     mean_img = [0.5457954, 0.44430383, 0.34424934],
-                     sd_img = [0.23273608, 0.24383051, 0.24237761]
-                     ):
-    
-    batch_cam = []
-
-    for i in range(img_batch.shape[0]):
-        batch_cam.get
-    
-
-
-def create_labels_legend(concept_scores: np.ndarray,
-                         labels: Dict[int, str],
-                         top_k=2):
-    concept_categories = np.argsort(concept_scores, axis=1)[:, ::-1][:, :top_k]
-    concept_labels_topk = []
-    for concept_index in range(concept_categories.shape[0]):
-        categories = concept_categories[concept_index, :]
-        concept_labels = []
-        for category in categories:
-            score = concept_scores[concept_index, category]
-            label = f"{','.join(labels[category].split(',')[:3])}:{score:.2f}"
-            concept_labels.append(label)
-        concept_labels_topk.append("\n".join(concept_labels))
-    return concept_labels_topk
 
 
 def scale_cam_image(cam, target_size=None):
@@ -117,18 +90,6 @@ def scale_cam_image(cam, target_size=None):
 
     return result
 
-
-def scale_accross_batch_and_channels(tensor, target_size):
-    batch_size, channel_size = tensor.shape[:2]
-    reshaped_tensor = tensor.reshape(
-        batch_size * channel_size, *tensor.shape[2:])
-    result = scale_cam_image(reshaped_tensor, target_size)
-    result = result.reshape(
-        batch_size,
-        channel_size,
-        target_size[1],
-        target_size[0])
-    return result
 
 
 def calculate_bbox(rows, cols):
