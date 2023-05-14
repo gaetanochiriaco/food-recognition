@@ -34,11 +34,12 @@ def from_tensor_to_image(tensor,
 
 def get_cam_on_image(img,
                       mask,
-                      use_rgb: bool = False,
+                      num_element= 0,
+                      use_rgb: bool = True,
                       colormap: int = cv2.COLORMAP_JET,
                       image_weight: float = 0.5,
                       mean_img = [0.5457954, 0.44430383, 0.34424934],
-                        sd_img = [0.23273608, 0.24383051, 0.24237761] ) -> np.ndarray:
+                        sd_img = [0.23273608, 0.24383051, 0.24237761]) -> np.ndarray:
     """ This function overlays the cam mask on the image as an heatmap.
     By default the heatmap is in BGR format.
 
@@ -51,12 +52,14 @@ def get_cam_on_image(img,
     """
 
     if torch.is_tensor(img):
-        img = from_tensor_to_image(img,mean_img=mean_img,sd_img=sd_img)
+        img = from_tensor_to_image(img,num_element=num_element,mean_img=mean_img,sd_img=sd_img)
         
     
     if torch.is_tensor(mask):
         mask = mask.detach().cpu().numpy()
-
+    
+    if len(mask.shape) == 4:
+        mask = mask[num_element,:,:,:]
     
 
     heatmap = cv2.applyColorMap(np.uint8(255.0 * mask), colormap)
@@ -71,7 +74,19 @@ def get_cam_on_image(img,
 
     cam = (1 - image_weight) * heatmap + image_weight * img
     cam = cam / np.max(cam)
-    return np.uint8(255.0 * cam),heatmap
+    return np.uint8(255.0 * cam)
+
+def get_cam_on_batch(img_batch,
+                     mask_batch,
+                     mean_img = [0.5457954, 0.44430383, 0.34424934],
+                     sd_img = [0.23273608, 0.24383051, 0.24237761]
+                     ):
+    
+    batch_cam = []
+
+    for i in range(img_batch.shape[0]):
+        batch_cam.get
+    
 
 
 def create_labels_legend(concept_scores: np.ndarray,
@@ -136,7 +151,7 @@ def calculate_bbox(rows, cols):
 
 
 
-def return_bbox_and_region(cam_img, ratio):
+def return_bbox(cam_img, ratio):
     blobs = cam_img > ratio * np.max(cam_img)
     
     blobs_labels, blobs_num = measure.label(
