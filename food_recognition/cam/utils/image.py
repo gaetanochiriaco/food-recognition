@@ -59,7 +59,7 @@ def get_cam_on_image(img,
 
     
 
-    heatmap = cv2.applyColorMap(np.uint8(255 * mask), colormap)
+    heatmap = cv2.applyColorMap(np.uint8(255.0 * mask), colormap)
     if use_rgb:
         heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
     heatmap = np.float32(heatmap) / 255
@@ -71,7 +71,7 @@ def get_cam_on_image(img,
 
     cam = (1 - image_weight) * heatmap + image_weight * img
     cam = cam / np.max(cam)
-    return np.uint8(255 * cam)
+    return np.uint8(255.0 * cam),heatmap
 
 
 def create_labels_legend(concept_scores: np.ndarray,
