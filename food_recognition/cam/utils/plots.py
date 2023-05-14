@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import torch 
 import torchvision.transforms as T
+from food_recognition.cam.utils.image import from_tensor_to_image
 
 def plot_bbox_on_image(img,bbox,save=True):
     
     if torch.is_tensor(img):
-        transform = T.ToPILImage()
-        img = transform(img)
+        img = from_tensor_to_image(img)
     
     plt.figure(figsize=(5,5))
     fig, ax = plt.subplots()
@@ -19,5 +19,17 @@ def plot_bbox_on_image(img,bbox,save=True):
     if save:
         plt.savefig("bbox.jpg",bbox_inches='tight',pad_inches=0)
     plt.show()  
+
+
+def plot_image(img,save=True):
+
+    if torch.is_tensor(img):
+        img = from_tensor_to_image(img)
+    
+    plt.figure(figsize=(5,5))
+    plt.imshow(img)
+    plt.axis('off')
+    plt.show()
+
 
 

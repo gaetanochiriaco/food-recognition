@@ -4,12 +4,35 @@ import torch
 from torchvision.transforms import Compose, Normalize, ToTensor
 from typing import List, Dict
 from torchvision import transforms
-from foodrecognition.transforms import inv_normalization
+from food_recognition.transforms import inv_normalization
 from skimage import measure
 
+def from_tensor_to_image(tensor,
+                        num_element = 0,
+                        mean_img = [0.5457954, 0.44430383, 0.34424934],
+                        sd_img = [0.23273608, 0.24383051, 0.24237761]):
+    
+    if type(tensor) == list:
+        tensor = tensor[0]
+
+    t1 = inv_normalization(mean_img,sd_img)
+
+    tensor = t1(tensor)
+
+    if len(tensor.shape) == 4:
+        img = tensor[num_element].permute(1,2,0)
+    else:
+        img = tensor.permute(1,2,0)
+
+    img = torch.clip(img,min=0,max=1)
+    img = img.detach().cpu().numpy()
+
+    return img
+    
 
 
-def show_cam_on_image(img,
+
+def get_cam_on_image(img,
                       mask,
                       use_rgb: bool = False,
                       colormap: int = cv2.COLORMAP_JET,
@@ -28,21 +51,14 @@ def show_cam_on_image(img,
     """
 
     if torch.is_tensor(img):
-        img = img.detach().cpu().numpy()
+        img = from_tensor_to_image(img)
+        
     
     if torch.is_tensor(mask):
-        img = img.detach().cpu().numpy()
-
-    if np.max(img) > 1 and np.min(img) < 0:
-        t1 = transforms.ToTensor()
-        t2 = inv_normalization(mean_img,sd_img)
-        img = t1(img)
-        img = t2(img)
-        img = torch.clip(img,min=0,max=1)
-        img = img.detach().cpu().numpy()
+        mask = mask.detach().cpu().numpy()
 
     if np.max(img) > 1:
-        img = img/255
+        img = img/255.
     
 
     heatmap = cv2.applyColorMap(np.uint8(255 * mask), colormap)
