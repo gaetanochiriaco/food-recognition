@@ -2,10 +2,10 @@ import numpy as np
 import torch
 import ttach as tta
 from typing import Callable, List, Tuple
-from pytorch_grad_cam.activations_and_gradients import ActivationsAndGradients
-from pytorch_grad_cam.utils.svd_on_activations import get_2d_projection
-from pytorch_grad_cam.utils.image import scale_cam_image
-from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
+from food_recognition.cam.activations_and_gradients import ActivationsAndGradients
+from food_recognition.cam.utils.svd_on_activations import get_2d_projection
+from food_recognition.cam.utils.image import scale_cam_image
+from food_recognition.cam.utils.model_targets import ClassifierOutputTarget
 
 
 class BaseCAM:
