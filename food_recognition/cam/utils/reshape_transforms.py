@@ -14,9 +14,9 @@ def fasterrcnn_reshape_transform(x):
     return activations
 
 
-def swinT_reshape_transform(tensor, height=7, width=7):
+def swin_reshape_transform(tensor, height=7, width=7):
     result = tensor.reshape(tensor.size(0),
-                            height, width, tensor.size(2))
+                            height, width, -1)
 
     # Bring the channels to the first dimension,
     # like in CNNs.

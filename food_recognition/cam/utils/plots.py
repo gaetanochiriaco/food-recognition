@@ -23,8 +23,8 @@ def plot_bbox_on_image(img,bbox,save=True):
 
 def plot_image(img,save=True):
 
-    if torch.is_tensor(img):
-        img = from_tensor_to_image(img)
+
+    img = from_tensor_to_image(img)
     
     plt.figure(figsize=(5,5))
     plt.imshow(img)
