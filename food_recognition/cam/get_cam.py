@@ -1,5 +1,5 @@
 import torch
-from food_recognition.cam import EigenCAM
+from eigen_cam import EigenCAM
 
 def get_output_and_cam(model: torch.nn.Module,
                        target_layer: torch.nn.Module,
