@@ -3,7 +3,7 @@ import torch
 import time
 from timm.loss import SoftTargetCrossEntropy
 import torch.nn as nn
-from foodrecognition.bert_emb import get_bert_embeddings
+from food_recognition.bert_emb import get_bert_embeddings
 
 def training_loop(model,
                   loader,

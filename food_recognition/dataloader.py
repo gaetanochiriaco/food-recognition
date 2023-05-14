@@ -3,7 +3,7 @@
 import torch
 import PIL
 import os
-from foodrecognition.transforms import get_transforms_list
+from food_recognition.transforms import get_transforms_list
 
 
 def My_loader(path):
