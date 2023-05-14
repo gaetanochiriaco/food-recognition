@@ -1,2 +1,2 @@
-from get_cam import get_output_and_cam
-from utils import *
+from food_recognition.cam.get_cam import get_output_and_cam
+from food_recognition.cam.utils import *

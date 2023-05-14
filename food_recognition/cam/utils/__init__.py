@@ -1,2 +1,2 @@
-from image import from_tensor_to_image, get_cam_on_image, calculate_bbox,return_bbox_and_region_cam
-from plots import plot_image, plot_bbox_on_image
+from food_recognition.cam.utils.image import from_tensor_to_image, get_cam_on_image, calculate_bbox,return_bbox_and_region_cam
+from food_recognition.cam.utils.plots import plot_image, plot_bbox_on_image
