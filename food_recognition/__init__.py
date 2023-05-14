@@ -1,1 +1,1 @@
-from . import cam
+from food_recognition import *
