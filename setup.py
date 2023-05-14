@@ -14,8 +14,8 @@ setuptools.setup(
     description='Food Recognition toolkit',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/gaetanochiriaco/FoodRecognition',
+    url='https://github.com/gaetanochiriaco/food-recognition',
     license='MIT',
-    packages=['foodrecognition'],
+    packages=['food_recognition'],
     install_requires=requirements,
 )
