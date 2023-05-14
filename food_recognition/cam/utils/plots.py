@@ -5,8 +5,8 @@ from food_recognition.cam.utils.image import from_tensor_to_image
 
 def plot_bbox_on_image(img,bbox,save=True):
     
-    if torch.is_tensor(img):
-        img = from_tensor_to_image(img)
+
+    img = from_tensor_to_image(img)
     
     plt.figure(figsize=(5,5))
     fig, ax = plt.subplots()

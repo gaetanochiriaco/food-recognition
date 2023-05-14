@@ -138,25 +138,19 @@ def calculate_bbox(rows, cols):
 
 
 
-def return_bbox_and_region_cam(cam_img, ratio):
+def return_bbox_and_region(cam_img, ratio):
     blobs = cam_img > ratio * np.max(cam_img)
-    #print("blobs: ", blobs)
+    
     blobs_labels, blobs_num = measure.label(
         blobs, background=0, return_num=True)
-    #print("blobs_num: ", blobs_num)
 
     sum_label = {}
     for label in range(1, blobs_num + 1):
-        # print("label: ", label)
         current_sum = np.sum(cam_img[np.where(blobs_labels == label)])
         sum_label[current_sum] = label
 
-    #print("sum_label: ", sum_label)
-    #print("max(sum_label): ", max(sum_label))
-    #print(sum_label[max(sum_label)])
-    #print(blobs_labels.shape)
+
     _,rows, cols = np.where(blobs_labels == sum_label[max(sum_label)])
     bbox = calculate_bbox(rows, cols)
-    region = (rows, cols)
 
-    return bbox, region
+    return bbox
