@@ -13,3 +13,7 @@ Repo with some work done on using Swin Transformer on the Food2k Dataset
 - Adding tutorial on how to extract a segmented piece of food using SAM and class activation map
 - Adding tutorial on how to test a pretrained model to validate results
 - Adding functions to plot more that one image per batch
+
+## References
+- [Explainability for Vision Transformers (in PyTorch)](https://github.com/jacobgil/vit-explain)
+- [Code release for Large Scale Visual Food Recognition](https://github.com/Liuyuxinict/prenet/)
