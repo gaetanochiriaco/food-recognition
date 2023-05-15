@@ -4,6 +4,7 @@ import time
 from timm.loss import SoftTargetCrossEntropy
 import torch.nn as nn
 from food_recognition.bert_emb import get_bert_embeddings
+import ttach as tta
 
 def training_loop(model,
                   loader,
@@ -167,3 +168,36 @@ def training_loop(model,
           tot_loss+=loss.detatch.cpu()
 
       print(f'Epoch end: {i:2}  val loss: {tot_loss/len(test_loader):10.8f} val accuracy: {tst_corr*100/(len(test_loader)*batch_size):7.3f}%  time : {time.time()-start_epoch:0f} s')
+
+
+def testing_loop(model,
+                 loader,
+                 TTA=True,
+                 print_batch=100):
+  
+  batch_size = loader.batch_size
+  transforms = tta.Compose([tta.HorizontalFlip(),
+                            tta.VerticalFlip(),
+                            tta.Rotate90(angles=[0, 90,180])])
+
+  tta_model = tta.ClassificationTTAWrapper(model, transforms)
+
+  model.cuda().eval()
+  tst_corr = 0
+  with torch.no_grad():
+    for b,batch in enumerate(loader):
+        b+=1
+        image,label=batch
+        image = image.cuda()
+        image = image.contiguous(memory_format=torch.channels_last)
+
+        pred=tta_model(image)
+
+        pred=torch.argmax(pred,dim=1).detach().cpu().numpy()
+        label = label.cpu().numpy()
+
+        num_corr = (label == pred).sum()
+        tst_corr += num_corr
+        
+        if b%print_batch == 0:
+          print((tst_corr*100)/(batch_size*b))
