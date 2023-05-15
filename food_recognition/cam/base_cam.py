@@ -5,7 +5,6 @@ from typing import Callable, List, Tuple
 from food_recognition.cam.activations_and_gradients import ActivationsAndGradients
 from food_recognition.cam.utils.svd_on_activations import get_2d_projection
 from food_recognition.cam.utils.image import scale_cam_image
-from food_recognition.cam.utils.model_targets import ClassifierOutputTarget
 
 class BaseCAM:
     def __init__(self,
