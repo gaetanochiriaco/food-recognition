@@ -144,6 +144,8 @@ def training_loop(model,
 
         # Save every print_batch
         if save:
+          print("Saving")
+          print(save_path)
           torch.save({
             'epoch': i,
             'batch':tot_batch,
