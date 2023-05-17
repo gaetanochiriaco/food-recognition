@@ -22,13 +22,18 @@ def training_loop(model,
                   save = False,
                   save_path = "",
                   model_name = "model",
-                  num_classes = 2000):
+                  num_classes = 2000,
+                  deit = False,
+                  teacher = None):
   
 
   tot_batch = last_batch
   # total number of epochs
   last_epoch = tot_batch //len(loader)
   batch_size = loader.batch_size
+
+  teacher = teacher.cuda()
+  teacher.eval()
   # use grad scaler
   if use_scaler:
     scaler = torch.cuda.amp.GradScaler()
@@ -86,8 +91,15 @@ def training_loop(model,
       # Use grad scaler (float16 precision)
       if use_scaler:
         with torch.cuda.amp.autocast():
-          y_pred = model(X_train)
-          loss = train_loss_fn(y_pred, y_train)
+          if deit:
+            y_pred,distil = model(X_train)
+            with torch.no_grad():
+              teach_pred = teacher(X_train)
+            loss = train_loss_fn(y_pred, y_train) + train_loss_fn(distil,teach_pred)
+          else:  
+            y_pred = model(X_train)
+
+            loss = train_loss_fn(y_pred, y_train)
           if bert:
             img_emb = nn.functional.tanh(activation['layers.3.blocks.1.mlp.fc2'].mean(dim=1))
             if mixup:
@@ -101,8 +113,15 @@ def training_loop(model,
 
 
       else:
-        y_pred = model(X_train)
-        loss = train_loss_fn(y_pred, y_train)
+        if deit:
+          y_pred,distil = model(X_train)
+          with torch.no_grad():
+            teach_pred = teacher(X_train)
+          loss = train_loss_fn(y_pred, y_train) + train_loss_fn(distil,teach_pred)
+        else:  
+          y_pred = model(X_train)
+
+          loss = train_loss_fn(y_pred, y_train)
         if bert:
           img_emb = nn.functional.tanh(activation['layers.3.blocks.1.mlp.fc2'].mean(dim=1))
           if mixup:
