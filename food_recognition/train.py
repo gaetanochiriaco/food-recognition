@@ -31,9 +31,9 @@ def training_loop(model,
   # total number of epochs
   last_epoch = tot_batch //len(loader)
   batch_size = loader.batch_size
-
-  teacher = teacher.cuda()
-  teacher.eval()
+  if deit:
+    teacher = teacher.cuda()
+    teacher.eval()
   # use grad scaler
   if use_scaler:
     scaler = torch.cuda.amp.GradScaler()
