@@ -53,6 +53,10 @@ def get_transforms_list(image_size = (224,224),
             RandomResizedCropAndInterpolation(image_size,scale=(0.08, 1.0),  interpolation="bicubic")
         )
 
+    else:
+        list_aug.append(transforms.Resize(image_size))
+
+
     if h_flip:
         list_aug.append(
             transforms.RandomHorizontalFlip(),
