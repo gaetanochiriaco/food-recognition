@@ -176,11 +176,12 @@ def testing_loop(model,
                  print_batch=100):
   
   batch_size = loader.batch_size
-  transforms = tta.Compose([tta.HorizontalFlip(),
+  if TTA:
+    transforms = tta.Compose([tta.HorizontalFlip(),
                             tta.VerticalFlip(),
                             tta.Rotate90(angles=[0, 90,180])])
 
-  tta_model = tta.ClassificationTTAWrapper(model, transforms)
+    tta_model = tta.ClassificationTTAWrapper(model, transforms)
 
   model.cuda().eval()
   tst_corr = 0
@@ -190,8 +191,11 @@ def testing_loop(model,
         image,label=batch
         image = image.cuda()
         image = image.contiguous(memory_format=torch.channels_last)
-
-        pred=tta_model(image)
+        if TTA:
+          pred = tta_model(image)
+        
+        else:
+          pred = model(image)
 
         pred=torch.argmax(pred,dim=1).detach().cpu().numpy()
         label = label.cpu().numpy()
@@ -201,3 +205,6 @@ def testing_loop(model,
         
         if b%print_batch == 0:
           print((tst_corr*100)/(batch_size*b))
+
+  return (tst_corr*100)/(batch_size*b)
+
