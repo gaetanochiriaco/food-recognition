@@ -17,7 +17,7 @@ def get_emb(food_label,tokenizer,model):
   
   return hidden_states[-1].mean(dim=1)
 
-def get_bert_embeddings(label_path, model_name = "bert-large-uncased"):
+def get_bert_embeddings(label_path, model_name = "bert-large-uncased",column = "Category"):
 
     labels = pd.read_csv(label_path,encoding="latin1",sep=";")
     tokenizer = BertTokenizer.from_pretrained(model_name)
@@ -29,9 +29,9 @@ def get_bert_embeddings(label_path, model_name = "bert-large-uncased"):
 
     for i in range(labels.shape[0]):
       if i == 0:
-        bert_emb = get_emb(labels.Category[i],tokenizer,bert_model)
+        bert_emb = get_emb(labels[column][i],tokenizer,bert_model)
 
       else:
-        bert_emb = torch.cat([bert_emb,get_emb(labels.Category[i],tokenizer,bert_model)], dim = 0)
+        bert_emb = torch.cat([bert_emb,get_emb(labels[column][i],tokenizer,bert_model)], dim = 0)
 
     return bert_emb
