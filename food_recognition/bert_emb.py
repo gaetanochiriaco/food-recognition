@@ -18,8 +18,10 @@ def get_emb(food_label,tokenizer,model):
   return hidden_states[-1].mean(dim=1)
 
 def get_bert_embeddings(label_path, model_name = "bert-large-uncased",column = "Category"):
-
-    labels = pd.read_csv(label_path,encoding="latin1",sep=";")
+    if type(label_path) == "str":
+      labels = pd.read_csv(label_path,encoding="latin1",sep=";")
+    else:
+      labels = label_path
     tokenizer = BertTokenizer.from_pretrained(model_name)
     bert_model = BertModel.from_pretrained(model_name,
                                   output_hidden_states = True)
