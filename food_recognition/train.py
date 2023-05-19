@@ -97,7 +97,7 @@ def training_loop(model,
             with torch.no_grad():
               teach_pred = teacher(X_train)
               teach_labels = torch.max(teach_pred.data, 1)[1]
-            loss = train_loss_fn(y_pred, y_train) + deit_loss_fn(distil,teach_labels)
+            loss = 0.5*train_loss_fn(y_pred, y_train) + 0.5*deit_loss_fn(distil,teach_labels)
           else:  
             y_pred = model(X_train)
 
@@ -120,7 +120,7 @@ def training_loop(model,
           with torch.no_grad():
             teach_pred = teacher(X_train)
             teach_labels = torch.max(teach_pred.data, 1)[1]
-          loss = train_loss_fn(y_pred, y_train) + deit_loss_fn(distil,teach_labels)
+          loss = 0.5*train_loss_fn(y_pred, y_train) + 0.5*deit_loss_fn(distil,teach_labels)
         else:  
           y_pred = model(X_train)
 
