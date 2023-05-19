@@ -211,9 +211,9 @@ class ResNet(nn.Module):
 
         x = self.avgpool(x5_1)
         x = x.reshape(x.size(0), -1)
+        x = self.fc(x)
 
-
-        return x1, x2, x3, x4, x5, x
+        return  x
 
 
 def _resnet(arch, inplanes, planes, pretrained, progress, path, **kwargs):
