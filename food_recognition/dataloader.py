@@ -2,7 +2,7 @@ import torch
 import PIL
 import os
 from food_recognition.transforms import get_transforms_list
-
+from torchvision.datasets import Food101
 
 def My_loader(path):
     return PIL.Image.open(path).convert('RGB')
@@ -55,3 +55,24 @@ def load_data(image_path,
     train_loader  = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True,  num_workers=2)
     test_loader   = torch.utils.data.DataLoader(dataset=test_dataset,  batch_size=batch_size,  shuffle=False, num_workers=2)
     return train_dataset, train_loader, test_dataset, test_loader
+
+
+
+def load_data_101(image_path,
+                  batch_size,
+                  image_size = (224,224),
+                  mean_img = [0.485, 0.456, 0.406],
+                  sd_img = [0.229, 0.224, 0.225],
+                  rrci = True,
+                  h_flip = True,
+                  aug3 = True,
+                  color_jitter = True):
+    
+   transform_train, transform_test = get_transforms_list(image_size,mean_img,sd_img,rrci,h_flip,aug3,color_jitter)
+   
+   train_dataset = Food101(root=image_path, split="train", download=False,transform=transform_train)
+   test_dataset = Food101(root=image_path, split="test", download=False,transform=transform_test)
+   train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers = 2)
+   test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False, num_workers = 2)
+    
+   return train_dataset, train_loader, test_dataset, test_loader
