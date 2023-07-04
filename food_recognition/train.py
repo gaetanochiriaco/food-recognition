@@ -221,16 +221,15 @@ def testing_loop(model,
         else:
           pred = model(image)
 
-        pred_t = torch.argmax(pred,dim=1).detach().cpu()
-        
-        pred = pred_t.numpy()
-        _, topk_indices = torch.topk(pred_t, dim=1,k=5)
+        pred_1 = torch.argmax(pred,dim=1).detach().cpu().numpy()
+        _, pred_5 = torch.topk(pred, dim=1,k=5).numpy()
+  
         label = label.cpu().numpy()
         
-        num_corr = (label == pred).sum()
+        num_corr = (label == pred_1).sum()
         tst_corr += num_corr
 
-        num_top5_corr =  np.isin(label, topk_indices.numpy()).sum(dim=1)
+        num_top5_corr =  np.isin(label, pred_5.numpy()).sum(dim=1)
         
         if b%print_batch == 0:
           print("Top1 Accuracy:",(tst_corr*100)/(batch_size*b),"\tTop5 Accuracy",(num_top5_corr*100)/(batch_size*b))
