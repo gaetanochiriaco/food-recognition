@@ -223,7 +223,7 @@ def testing_loop(model,
 
         pred_1 = torch.argmax(pred,dim=1).detach().cpu().numpy()
         _, pred_5 = torch.topk(pred, dim=1,k=5)
-        pred_5 = pred_5.numpy()
+        pred_5 = pred_5.cpu().numpy()
   
         label = label.cpu().numpy()
         
