@@ -230,7 +230,7 @@ def testing_loop(model,
         num_corr = (label == pred_1).sum()
         tst_corr += num_corr
 
-        num_top5_corr =  np.isin(label, pred_5.numpy()).sum(dim=1)
+        num_top5_corr =  np.isin(label, pred_5).sum(dim=1)
         
         if b%print_batch == 0:
           print("Top1 Accuracy:",(tst_corr*100)/(batch_size*b),"\tTop5 Accuracy",(num_top5_corr*100)/(batch_size*b))
