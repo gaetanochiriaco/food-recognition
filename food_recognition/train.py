@@ -231,7 +231,7 @@ def testing_loop(model,
         num_corr = (label == pred_1).sum()
         tst_corr += num_corr
 
-        num_top5_corr =  np.isin(label, pred_5).sum()
+        num_top5_corr =  (label[...,None] == pred_5).any(axis=1)
         tst_5_corr += num_top5_corr
         
         if b%print_batch == 0:
