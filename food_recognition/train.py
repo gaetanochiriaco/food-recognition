@@ -5,6 +5,7 @@ from timm.loss import SoftTargetCrossEntropy
 import torch.nn as nn
 from food_recognition.bert_emb import get_bert_embeddings
 import ttach as tta
+import numpy as np
 
 def training_loop(model,
                   loader,
@@ -220,14 +221,17 @@ def testing_loop(model,
         else:
           pred = model(image)
 
-        pred=torch.argmax(pred,dim=1).detach().cpu().numpy()
+        pred = torch.argmax(pred,dim=1).detach().cpu().numpy()
+        _, topk_indices = torch.topk(pred, dim=1,k=5)
         label = label.cpu().numpy()
-
+        
         num_corr = (label == pred).sum()
         tst_corr += num_corr
+
+        num_top5_corr =  np.isin(label, topk_indices).sum(dim=1)
         
         if b%print_batch == 0:
-          print((tst_corr*100)/(batch_size*b))
+          print("Top1 Accuracy:",(tst_corr*100)/(batch_size*b),"\tTop5 Accuracy",(num_top5_corr*100)/(batch_size*b))
 
   return (tst_corr*100)/(batch_size*b)
 
