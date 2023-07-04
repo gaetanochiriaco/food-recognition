@@ -209,6 +209,7 @@ def testing_loop(model,
 
   model.cuda().eval()
   tst_corr = 0
+  tst_5_corr = 0
   with torch.no_grad():
     for b,batch in enumerate(loader):
         b+=1
@@ -231,9 +232,10 @@ def testing_loop(model,
         tst_corr += num_corr
 
         num_top5_corr =  np.isin(label, pred_5).sum()
+        tst_5_corr += num_top5_corr
         
         if b%print_batch == 0:
-          print("Top1 Accuracy:",(tst_corr*100)/(batch_size*b),"\tTop5 Accuracy",(num_top5_corr*100)/(batch_size*b))
+          print("Top1 Accuracy:",(tst_corr*100)/(batch_size*b),"\tTop5 Accuracy",(tst_5_corr*100)/(batch_size*b))
 
   return (tst_corr*100)/(batch_size*b)
 
