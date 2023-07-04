@@ -6,6 +6,16 @@ from food_recognition.cam.activations_and_gradients import ActivationsAndGradien
 from food_recognition.cam.utils.svd_on_activations import get_2d_projection
 from food_recognition.cam.utils.image import scale_cam_image
 
+
+class ClassifierOutputTarget:
+    def __init__(self, category):
+        self.category = category
+
+    def __call__(self, model_output):
+        if len(model_output.shape) == 1:
+            return model_output[self.category]
+        return model_output[:, self.category]
+
 class BaseCAM:
     def __init__(self,
                  model: torch.nn.Module,
