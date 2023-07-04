@@ -235,7 +235,7 @@ def testing_loop(model,
         tst_5_corr += num_top5_corr
         
         if b%print_batch == 0:
-          print("Top1 Accuracy:",(tst_corr*100)/(batch_size*b),"\tTop5 Accuracy",(tst_5_corr*100)/(batch_size*b))
+          print("Top1 Accuracy:",round((tst_corr*100)/(batch_size*b),2),"\tTop5 Accuracy",round((tst_5_corr*100)/(batch_size*b),2))
 
   return (tst_corr*100)/(batch_size*b)
 
