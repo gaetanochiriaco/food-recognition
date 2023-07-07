@@ -9,15 +9,16 @@ from skimage import measure
 
 def from_tensor_to_image(tensor,
                         num_element = 0,
+                        inv_norm = True,
                         mean_img = [0.5457954, 0.44430383, 0.34424934],
                         sd_img = [0.23273608, 0.24383051, 0.24237761]):
     
     if type(tensor) == list:
         tensor = tensor[0]
-
-    t1 = inv_normalization(mean_img,sd_img)
-
-    tensor = t1(tensor)
+    if inv_norm:
+        t1 = inv_normalization(mean_img,sd_img)
+        tensor = t1(tensor)
+      
 
     if len(tensor.shape) == 4:
         img = tensor[num_element].permute(1,2,0)
