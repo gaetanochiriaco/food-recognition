@@ -21,9 +21,12 @@ def from_tensor_to_image(tensor,
       
 
     if len(tensor.shape) == 4:
-        img = tensor[num_element].permute(1,2,0)
+        img = tensor[num_element]
     else:
-        img = tensor.permute(1,2,0)
+        img = tensor
+
+    if tensor.shape[2] != 3 or tensor.shape[2] != 1: 
+        img = img.permute(1,2,0)
 
     img = torch.clip(img,min=0,max=1)
     img = img.detach().cpu().numpy()
