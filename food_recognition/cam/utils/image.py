@@ -25,7 +25,7 @@ def from_tensor_to_image(tensor,
     else:
         img = tensor
 
-    if tensor.shape[2] != 3 or tensor.shape[2] != 1: 
+    if tensor.shape[2] != 3 and tensor.shape[2] != 1: 
         img = img.permute(1,2,0)
 
     img = torch.clip(img,min=0,max=1)
