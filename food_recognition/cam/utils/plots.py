@@ -21,10 +21,14 @@ def plot_bbox_on_image(img,bbox,save=True):
     plt.show()  
 
 
-def plot_image(img,num_element=0,save=True):
+def plot_image(img,
+               num_element=0,
+               inv_norm = True,
+               mean_img = [0.5457954, 0.44430383, 0.34424934],
+               sd_img = [0.23273608, 0.24383051, 0.24237761]):
 
 
-    img = from_tensor_to_image(img,num_element=0)
+    img = from_tensor_to_image(img,num_element=num_element,inv_norm = inv_norm, mean_img = mean_img ,sd_img = sd_img)
     
     plt.figure(figsize=(5,5))
     plt.imshow(img)
