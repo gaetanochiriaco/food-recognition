@@ -42,8 +42,8 @@ def training_loop(model,
     train_loss_fn = SoftTargetCrossEntropy().cuda()
 
     mixup_args = dict(
-            mixup_alpha=0.8, cutmix_alpha=1.0, cutmix_minmax=None,
-            prob=1.0, switch_prob=0.5, mode="batch",
+            mixup_alpha=0.5, cutmix_alpha=0.5, cutmix_minmax=None,
+            prob=0.5, switch_prob=0, mode="batch",
             label_smoothing=0.1, num_classes=num_classes)
     mixup_fn = Mixup(**mixup_args)
 
