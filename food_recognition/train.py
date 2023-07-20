@@ -65,8 +65,11 @@ def training_loop(model,
         activation[name] = output.detach()
       return hook
 
-    model.layers[3].blocks[1].mlp.fc2.register_forward_hook(get_activation('layers.3.blocks.1.mlp.fc2'))
-
+    try:
+      model.layers[3].blocks[1].mlp.fc2.register_forward_hook(get_activation('emb'))
+    except:
+      model.blocks[-1].mlp.fc2.register_forward_hook(get_activation('emb'))
+      
 
 
   # Training loop
@@ -104,7 +107,7 @@ def training_loop(model,
 
             loss = train_loss_fn(y_pred, y_train)
           if bert:
-            img_emb = nn.functional.tanh(activation['layers.3.blocks.1.mlp.fc2'].mean(dim=1))
+            img_emb = nn.functional.tanh(activation['emb'].mean(dim=1))
             if mixup:
               label_emb = (y_train@bert_emb)
     
