@@ -18,6 +18,7 @@ def training_loop(model,
                   test=False,
                   test_loader= None,
                   bert=False,
+                  bert_model = 'bert-large-uncased',
                   label_path= None,
                   print_batch=100,
                   save = False,
@@ -55,7 +56,7 @@ def training_loop(model,
   # use bert loss
   if bert:
 
-    bert_emb = get_bert_embeddings(label_path)
+    bert_emb = get_bert_embeddings(label_path,model_name  = bert_model)
     bert_emb = bert_emb.cuda()
     MSE_loss_fn = nn.MSELoss().cuda()
 
@@ -130,7 +131,7 @@ def training_loop(model,
 
           loss = train_loss_fn(y_pred, y_train)
         if bert:
-          img_emb = nn.functional.tanh(activation['layers.3.blocks.1.mlp.fc2'].mean(dim=1))
+          img_emb = nn.functional.tanh(activation['emb'].mean(dim=1))
           if mixup:
             label_emb = (y_train@bert_emb)
     
