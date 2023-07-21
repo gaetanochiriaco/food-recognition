@@ -75,6 +75,7 @@ def training_loop_time_test(model,
 
   # Training loop
   for i in range(last_epoch+1,epochs+1):
+    tot_time = 0
     start_epoch = time.time()
 
     # Compute accuracy if not mixup
@@ -163,7 +164,8 @@ def training_loop_time_test(model,
       scheduler.step(tot_batch//len(loader))
       
       end_time_b = time.time()
-      print(end_time_b - start_time_b)
+      tot_time += (end_time_b - start_time_b)
+      print(tot_time/b)
       # Print every print_batch
       if b%print_batch== 0:
         if mixup:
