@@ -236,7 +236,7 @@ def testing_loop(model,
         corr_pred = (label == pred_1)
         num_corr = corr_pred.sum()
         if get_dict:
-          lab_error = [label[i] for i in range(len(label)) if p[i]==False]
+          lab_error = [label[i] for i in range(len(label)) if corr_pred[i]==False]
           for i in lab_error:
             try:
               dict_error[str(i)] = dict_error[str(i)] + 1
