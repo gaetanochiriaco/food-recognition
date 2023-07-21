@@ -81,10 +81,11 @@ def training_loop_time_test(model,
     # Compute accuracy if not mixup
     if not mixup:
       trn_corr = 0
-
+      
+    start_time_b = time.time()
     # Training batches
     for b, (X_train, y_train) in enumerate(loader):
-      start_time_b = time.time()
+      
       b+=1
       tot_batch+=1
 
@@ -164,8 +165,7 @@ def training_loop_time_test(model,
       scheduler.step(tot_batch//len(loader))
       
       end_time_b = time.time()
-      tot_time += (end_time_b - start_time_b)
-      print(tot_time/b)
+      print((end_time_b - start_time_b)/b)
       # Print every print_batch
       if b%print_batch== 0:
         if mixup:
