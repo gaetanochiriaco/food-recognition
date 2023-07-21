@@ -201,7 +201,8 @@ def training_loop(model,
 def testing_loop(model,
                  loader,
                  TTA=True,
-                 print_batch=100):
+                 print_batch=100,
+                 get_dict = False):
   
   batch_size = loader.batch_size
   if TTA:
@@ -211,6 +212,7 @@ def testing_loop(model,
 
     tta_model = tta.ClassificationTTAWrapper(model, transforms)
 
+  dict_error = {}
   model.cuda().eval()
   tst_corr = 0
   tst_5_corr = 0
@@ -231,8 +233,16 @@ def testing_loop(model,
         pred_5 = pred_5.cpu().numpy()
   
         label = label.cpu().numpy()
+        corr_pred = (label == pred_1)
+        num_corr = corr_pred.sum()
+        if get_dict:
+          lab_error = [label[i] for i in range(len(label)) if p[i]==False]
+          for i in lab_error:
+            try:
+              dict_error[str(i)] = dict_error[str(i)] + 1
+            except:
+              dict_error[str(i)] = 1
         
-        num_corr = (label == pred_1).sum()
         tst_corr += num_corr
 
         num_top5_corr =  (label[...,None] == pred_5).any(axis=1).sum()
@@ -240,6 +250,9 @@ def testing_loop(model,
         
         if b%print_batch == 0:
           print("Top1 Accuracy:",(tst_corr*100)/(batch_size*b),"\tTop5 Accuracy",(tst_5_corr*100)/(batch_size*b))
-
-  return (tst_corr*100)/(batch_size*b)
+          
+  if get_dict:
+      return dict_error,(tst_corr*100)/(batch_size*b)
+  else:
+      return (tst_corr*100)/(batch_size*b)
 
