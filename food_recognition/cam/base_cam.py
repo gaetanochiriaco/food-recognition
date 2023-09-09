@@ -91,15 +91,6 @@ class BaseCAM:
                        for target, output in zip(targets, outputs)])
             loss.backward(retain_graph=True)
 
-        # In most of the saliency attribution papers, the saliency is
-        # computed with a single target layer.
-        # Commonly it is the last convolutional layer.
-        # Here we support passing a list with multiple target layers.
-        # It will compute the saliency image for every image,
-        # and then aggregate them (with a default mean aggregation).
-        # This gives you more flexibility in case you just want to
-        # use all conv layers for example, all Batchnorm layers,
-        # or something else.
         cam_per_layer = self.compute_cam_per_layer(input_tensor,
                                                    targets,
                                                    eigen_smooth)  
@@ -123,7 +114,7 @@ class BaseCAM:
         target_size = self.get_target_width_height(input_tensor)
 
         cam_per_target_layer = []
-        # Loop over the saliency image from every layer
+
         for i in range(len(self.target_layers)):
             target_layer = self.target_layers[i]
             layer_activations = None
@@ -171,12 +162,12 @@ class BaseCAM:
                                targets,
                                eigen_smooth)
 
-            # The ttach library expects a tensor of size BxCxHxW
+  
             cam = cam[:, None, :, :]
             cam = torch.from_numpy(cam)
             cam = transform.deaugment_mask(cam)
 
-            # Back to numpy float32, HxW
+
             cam = cam.numpy()
             cam = cam[:, 0, :, :]
             cams.append(cam)
@@ -190,7 +181,7 @@ class BaseCAM:
                  aug_smooth: bool = False,
                  eigen_smooth: bool = False) -> np.ndarray:
 
-        # Smooth the CAM result with test time augmentation
+
         if aug_smooth is True:
             return self.forward_augmentation_smoothing(
                 input_tensor, targets, eigen_smooth)
@@ -207,7 +198,6 @@ class BaseCAM:
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.activations_and_grads.release()
         if isinstance(exc_value, IndexError):
-            # Handle IndexError here...
             print(
                 f"An exception occurred in CAM with block: {exc_type}. Message: {exc_value}")
             return True

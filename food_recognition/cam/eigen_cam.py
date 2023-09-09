@@ -1,7 +1,6 @@
 from food_recognition.cam.base_cam import BaseCAM
 from food_recognition.cam.utils.svd_on_activations import get_2d_projection
 
-# https://arxiv.org/abs/2008.00299
 
 
 class EigenCAM(BaseCAM):
