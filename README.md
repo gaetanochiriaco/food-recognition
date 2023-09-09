@@ -12,3 +12,4 @@ Repo with some work done on using Swin Transformer on the Food2k Dataset
 ## References
 - [Explainability for Vision Transformers (in PyTorch)](https://github.com/jacobgil/vit-explain)
 - [Code release for Large Scale Visual Food Recognition](https://github.com/Liuyuxinict/prenet/)
+- [Transformer-Explainability](https://github.com/hila-chefer/Transformer-Explainability)
