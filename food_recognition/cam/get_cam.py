@@ -5,7 +5,9 @@ def get_output_and_cam(model: torch.nn.Module,
                        target_layer: torch.nn.Module,
                        reshape_transform,
                        input_tensor: torch.nn.Module,
-                       method=EigenCAM):
+                       method=EigenCAM,
+                       aug_smooth = False,
+                       eigen_smooth = False):
     
         cam = method(model=model,
                       target_layers=target_layer,
@@ -15,8 +17,8 @@ def get_output_and_cam(model: torch.nn.Module,
 
         output, batch_results = cam(input_tensor=input_tensor,
                                     targets = None,
-                                    aug_smooth = False,
-                                    eigen_smooth = False)
+                                    aug_smooth = aug_smooth,
+                                    eigen_smooth = eigen_smooth)
         
 
         return output, batch_results
